@@ -45,7 +45,7 @@ file=$(echo $data | jq -r .params.file)
 echo '=======source and params parsed'
 echo
 
-basePath="/tmp/build/put/"
+#basePath="/tmp/build/put/"
 
 cluster=cluster1
 context=context1
@@ -66,16 +66,16 @@ validateEmpty "Token" $token
 echo '=======source details validated'
 echo
 
-echo '=======Validating params...'
-validateEmpty "file" $file
+# echo '=======Validating params...'
+# validateEmpty "file" $file
 
-if [[ ! -f $basePath$file ]] && [[ ! -d $basePath$file ]]; then
-    echo "Valid file / folder was not provided"
-    invalidSourceParams
-fi
+# if [[ ! -f $basePath$file ]] && [[ ! -d $basePath$file ]]; then
+#     echo "Valid file / folder was not provided"
+#     invalidSourceParams
+# fi
 
-echo '=======params validated'
-echo
+# echo '=======params validated'
+# echo
 
 echo '=======Configuring kubectl to connect to the target Kubernetes cluster...'
 kubectl config set-cluster $cluster --server=$uri
@@ -89,7 +89,8 @@ echo '=======kubectl configured'
 echo
 
 echo '=======Applying file(s) configured using kubectl...'
-kubectl apply -f $basePath$file
+#kubectl apply -f $basePath$file
+kubectl $basePath$file
 echo '=======File(s) applied using kubectl'
 echo
 
@@ -100,13 +101,13 @@ kubectl config unset users.$uname
 echo '=======kubectl configuration cleared'
 echo
 
-outJson='{"version": { "value": "na"}, "metadata": [
-        { "name": "File / Folder applied", "value": "file-value"}
-        ]}'
+# outJson='{"version": { "value": "na"}, "metadata": [
+#         { "name": "File / Folder applied", "value": "file-value"}
+#         ]}'
 
-outJson=$(echo $outJson | sed s~file-value~$file~g)
-echo $outJson >&3
-echo
+# outJson=$(echo $outJson | sed s~file-value~$file~g)
+# echo $outJson >&3
+# echo
 
 echo "=======PUT completed"
 
